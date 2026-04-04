@@ -16,8 +16,12 @@ export default function ScratchCircle({ value, onReveal }: Props) {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // Fill gold
-    ctx.fillStyle = "#d4af37";
+    // 🎨 GOLD GRADIENT (premium look)
+    const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+    gradient.addColorStop(0, "#f5d27a");
+    gradient.addColorStop(1, "#c9a227");
+
+    ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     let isDrawing = false;
@@ -38,7 +42,7 @@ export default function ScratchCircle({ value, onReveal }: Props) {
 
       scratch(x, y);
 
-      // Calculate scratch percentage
+      // 🔍 Calculate scratched %
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       let cleared = 0;
 
@@ -48,34 +52,59 @@ export default function ScratchCircle({ value, onReveal }: Props) {
 
       const percent = cleared / (canvas.width * canvas.height);
 
-      // Auto reveal at 40%
+      // 🎯 AUTO REVEAL
       if (percent > 0.4 && !revealed) {
         setRevealed(true);
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        document.body.style.overflow = ""; // ✅ ALWAYS UNLOCK SCROLL
         onReveal();
       }
     };
 
-    const start = () => (isDrawing = true);
-    const end = () => (isDrawing = false);
+    const start = () => {
+      isDrawing = true;
+      document.body.style.overflow = "hidden"; // 🚫 lock scroll
+    };
 
+    const end = () => {
+      isDrawing = false;
+      document.body.style.overflow = ""; // ✅ unlock scroll safely
+    };
+
+    // 🖱 POINTER EVENTS
     canvas.addEventListener("pointerdown", start);
     canvas.addEventListener("pointerup", end);
     canvas.addEventListener("pointerleave", end);
+    canvas.addEventListener("pointercancel", end); // 🔥 important
     canvas.addEventListener("pointermove", handlePointerMove);
 
+    // 📱 MOBILE SCROLL FIX
+    const preventTouchScroll = (e: TouchEvent) => {
+      e.preventDefault();
+    };
+
+    canvas.addEventListener("touchmove", preventTouchScroll, {
+      passive: false,
+    });
+
     return () => {
+      // 🔥 ALWAYS CLEANUP
+      document.body.style.overflow = "";
+
       canvas.removeEventListener("pointerdown", start);
       canvas.removeEventListener("pointerup", end);
       canvas.removeEventListener("pointerleave", end);
+      canvas.removeEventListener("pointercancel", end);
       canvas.removeEventListener("pointermove", handlePointerMove);
+      canvas.removeEventListener("touchmove", preventTouchScroll);
     };
   }, [revealed, onReveal]);
 
   return (
-    <div className="relative w-28 h-28 flex items-center justify-center">
+    <div className="relative w-28 h-28 flex items-center justify-center touch-none">
 
-      {/* TEXT */}
+      {/* TEXT UNDER SCRATCH */}
       <span className="absolute text-2xl font-serif text-teal-900">
         {value}
       </span>
@@ -86,7 +115,7 @@ export default function ScratchCircle({ value, onReveal }: Props) {
           ref={canvasRef}
           width={120}
           height={120}
-          className="absolute rounded-full cursor-pointer shadow-lg"
+          className="absolute rounded-full shadow-lg cursor-pointer"
         />
       )}
     </div>

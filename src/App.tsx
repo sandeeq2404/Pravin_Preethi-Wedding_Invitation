@@ -1,27 +1,75 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useState, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 import HeroSection from "./components/HeroSection";
 import CountdownTimer from "./components/CountdownTimer";
 import EventsSection from "./components/EventsSection";
 import MapSection from "./components/MapSection";
 import EnvelopeLanding from "./components/EnvelopeLanding";
-import ScratchReveal from "./components/ScratchReveal"
-
+import ScratchReveal from "./components/ScratchReveal";
+import LoadingScreen from "./components/LoadingScreen";
 
 function App() {
-  const [entered, setEntered] = useState(false); // ✅ FIX
+  const [entered, setEntered] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [muted, setMuted] = useState(false);
+
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  /* ================= HANDLE OPEN ================= */
+  const handleOpen = () => {
+    setEntered(true);
+    setLoading(true);
+
+    // 🎵 play music
+    if (audioRef.current) {
+      audioRef.current.muted = false;
+      audioRef.current.play().catch(() => {});
+    }
+
+    // 🖼️ PRELOAD IMAGES (IMPORTANT)
+    const images = [
+      "/border.png",
+      "/gold-border.png",
+      "/peacock.png"
+    ];
+
+    images.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+
+    // ⏳ LOADING DELAY (smooth UX)
+    setTimeout(() => {
+      setLoading(false);
+    }, 5500);
+  };
+
+  /* ================= SOUND ================= */
+  const toggleSound = () => {
+    if (!audioRef.current) return;
+
+    const newMuted = !muted;
+    audioRef.current.muted = newMuted;
+    setMuted(newMuted);
+  };
 
   return (
-    <div className="bg-[#f5efe6] text-gray-800">
+    <div className="bg-[#f5efe6] text-gray-800 relative overflow-hidden">
 
-      {/* LANDING */}
-      {!entered && (
-        <EnvelopeLanding onOpen={() => setEntered(true)} />
-      )}
+      {/* AUDIO */}
+      <audio ref={audioRef} src="/music.mp3" loop />
 
-      {/* MAIN CONTENT (ONLY AFTER OPEN) */}
-      {entered && (
+      {/* ENVELOPE */}
+      {!entered && <EnvelopeLanding onOpen={handleOpen} />}
+
+      {/* 🔥 LOADING SCREEN */}
+      <AnimatePresence>
+        {loading && <LoadingScreen />}
+      </AnimatePresence>
+
+      {/* MAIN CONTENT */}
+      {entered && !loading && (
         <>
           <HeroSection />
 
@@ -47,13 +95,24 @@ function App() {
 
               <p className="text-sm text-teal-200">
                 20th April 2026
-            
               </p>
             </footer>
           </motion.div>
+
+          {/* 🔊 SOUND BUTTON */}
+          <button
+            onClick={toggleSound}
+            className="
+              fixed bottom-6 right-6 z-50 
+              bg-teal-800 hover:bg-teal-900 
+              text-white px-4 py-3 rounded-full 
+              shadow-lg transition-all
+            "
+          >
+            {muted ? "🔇" : "🔊"}
+          </button>
         </>
       )}
-
     </div>
   );
 }
