@@ -14,23 +14,24 @@ export default function EventsSection() {
         Events
       </motion.h2>
 
-      <div className="space-y-20">
+      {/* ✅ GRID FIX */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center justify-center max-w-6xl mx-auto">
 
         {/* ================= CHENNAI ================= */}
         <BorderCard>
 
-          <h3 className="text-5xl md:text-4xl font-script text-teal-800 mb-3">
+          <h3 className="text-4xl md:text-3xl font-script text-teal-800 mb-3">
             Reception & Wedding
           </h3>
 
-          <p className="text-3xl text-amber-600 font-serif mb-6 tracking-wide">
+          <p className="text-xl text-amber-600 font-serif mb-6 tracking-wide">
             Chennai
           </p>
 
-          <p className="text12xl font-serif text-gray-800">
+          <p className="text-lg font-serif text-gray-800">
             Reception — 19 April 2026
           </p>
-          <p className="text-12xl text-gray-600 mb-3">
+          <p className="text-sm text-gray-600 mb-3">
             6:30 PM onwards
           </p>
 
@@ -67,15 +68,15 @@ export default function EventsSection() {
         {/* ================= COIMBATORE ================= */}
         <BorderCard>
 
-          <h3 className="text-5xl md:text-4xl font-script text-teal-800 mb-3">
+          <h3 className="text-4xl md:text-3xl font-script text-teal-800 mb-3">
             Reception
           </h3>
 
-          <p className="text-3xl text-amber-600 font-serif mb-6 tracking-wide">
+          <p className="text-xl text-amber-600 font-serif mb-6 tracking-wide">
             Coimbatore
           </p>
 
-          <p className="text-12xl font-serif text-gray-800">
+          <p className="text-lg font-serif text-gray-800">
             22 April 2026
           </p>
 
@@ -114,7 +115,7 @@ export default function EventsSection() {
 
 /* ================= PREMIUM BORDER CARD ================= */
 
-function BorderCard({ children }: { children: React.ReactNode }) {
+function BorderCard({ children }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
@@ -123,8 +124,8 @@ function BorderCard({ children }: { children: React.ReactNode }) {
       viewport={{ once: true }}
       className="
         relative 
-        w-full max-w-[500px]   /* ✅ SAME SIZE FOR ALL */
-        h-[600px]              /* ✅ FIXED HEIGHT */
+        w-full max-w-[500px]
+        h-[600px]
         mx-auto
         flex items-center justify-center
       "
@@ -137,7 +138,7 @@ function BorderCard({ children }: { children: React.ReactNode }) {
         className="
           absolute inset-0 w-full h-full object-contain
           pointer-events-none
-          scale-[1.08]   /* ✅ Slightly bigger */
+          scale-[1.08]
         "
       />
 
