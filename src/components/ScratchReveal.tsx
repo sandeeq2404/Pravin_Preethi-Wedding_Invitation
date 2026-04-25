@@ -75,8 +75,8 @@ export default function ScratchReveal() {
       </div>
 
       <div className="flex justify-center gap-6 md:gap-10 px-4">
-        <ScratchCircle value="20" onReveal={handleReveal} />
-        <ScratchCircle value="APR" onReveal={handleReveal} />
+        <ScratchCircle value="13" onReveal={handleReveal} />
+        <ScratchCircle value="MAY" onReveal={handleReveal} />
         <ScratchCircle value="2026" onReveal={handleReveal} />
       </div>
 
