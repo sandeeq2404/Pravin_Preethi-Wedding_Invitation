@@ -29,14 +29,14 @@ export default function EventsSection() {
           </p>
 
           <p className="text-lg font-serif text-gray-800">
-            Reception — 19 April 2026
+            Reception — 12 May 2026
           </p>
           <p className="text-sm text-gray-600 mb-3">
             6:30 PM onwards
           </p>
 
           <p className="text-base font-serif text-gray-800 mt-3">
-            Wedding — 20 April 2026
+            Wedding — 13 May 2026
           </p>
           <p className="text-sm text-gray-600 mb-5">
             6:00 AM – 7:30 AM
@@ -77,7 +77,7 @@ export default function EventsSection() {
           </p>
 
           <p className="text-lg font-serif text-gray-800">
-            22 April 2026
+            13 May 2026
           </p>
 
           <p className="text-sm text-gray-600 mb-5">
