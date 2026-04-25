@@ -54,7 +54,7 @@ export default function CountdownTimer() {
   useEffect(() => {
   setIsMounted(true);
 
-  const weddingDate = new Date("2026-04-20T06:00:00+05:30").getTime();
+  const weddingDate = new Date("2026-05-13T06:00:00+05:30").getTime();
 
   const updateCountdown = () => {
     const now = new Date().getTime();
